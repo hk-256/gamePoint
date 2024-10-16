@@ -39,14 +39,14 @@ const { brotliCompressSync } = require("zlib");
 const dbUrl = "mongodb+srv://iit2021256:lkNiJDmvpsgs5V50@cluster0.xonmd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // const dbUrl = "mongodb+srv://nandaaman1234:5BHbKoY9dGvAJRFu@cluster0.zi3ou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // const dbUrl = process.env.DB_URL;
-// mongoose.connect(dbUrl,{useNewUrlParser:true})
-//   .then(()=>{
-//     console.log("connected");
-//   })
-//   .catch((err)=>{
-//     console.log("there is an error in connecting");
-//     console.log(err);
-//   })
+mongoose.connect(dbUrl)
+  .then(()=>{
+    console.log("connected");
+  })
+  .catch((err)=>{
+    console.log("there is an error in connecting");
+    console.log(err);
+  })
 
 
 app.set('view engine', 'ejs');
@@ -54,25 +54,25 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended:true}));
 
 
-const connect = async () => {
-    try {
-        await mongoose.connect(dbUrl, { useNewUrlParser: true });
-        console.log("object")
-		app.listen(5500, () => {
-			console.log(`Connection established at localhost:${5500}`);
-		});
-	} catch (err) {
-		console.error('Error connecting to MongoDB:', err);
-	}
-};
+// const connect = async () => {
+//     try {
+//         await mongoose.connect(dbUrl, { useNewUrlParser: true });
+//         console.log("object")
+// 		app.listen(5500, () => {
+// 			console.log(`Connection established at localhost:${5500}`);
+// 		});
+// 	} catch (err) {
+// 		console.error('Error connecting to MongoDB:', err);
+// 	}
+// };
 
-connect();
+// connect();
 
 
 
-//   app.listen(5500,()=>{
-//       console.log("started listening to the port 5500");
-//   })
+  app.listen(5500,()=>{
+      console.log("started listening to the port 5500");
+  })
 
   
 const store = MongoStore.create({
