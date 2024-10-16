@@ -1,0 +1,129 @@
+<% layout("layouts/BoilerPlate") %>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Court Availability and Booking</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    .table thead th {
+      text-align: center;
+      vertical-align: middle;
+      background-color: #007bff;
+      color: white;
+    }
+
+    .table tbody td {
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    .available {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .unavailable {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .selected {
+      background-color: #ffc107 !important;
+      color: #000;
+    }
+
+    .btn-book {
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Court Availability and Booking</h2>
+
+    <!-- Form for booking -->
+    <form id="bookingForm" action="/sport/<%= id %>/book" method="POST">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Time</th>
+              <!-- Loop through courts and create headers dynamically -->
+              <% for (let i = 1; i < courts; i++) { %>
+                <th scope="col">Court <%= i %></th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through time slots from 6 to 23 -->
+            <% for (let hour = 6; hour <= 23; hour++) { %>
+              <tr>
+                <td><%= hour %>:00</td>
+                <!-- Loop through each court to show availability dynamically -->
+                <% for (let court = 1; court < courts; court++) { %>
+                  <% if (availability[hour] && availability[hour][court - 1]) { %>
+                    <!-- If court is available -->
+                    <td class="available" data-hour="<%= hour %>" data-court="<%= court %>" style="background-color: #78e792;"></td>
+                  <% } else { %>
+                    <!-- If court is unavailable -->
+                    <td class="unavailable" style="background-color: #dd2a2a"></td>
+                  <% } %>
+                <% } %>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Hidden input to store selected slots -->
+      <input type="hidden" name="selectedSlots" id="selectedSlotsInput">
+
+      <!-- Button to submit the form -->
+      <button id="bookBtn" class="btn btn-primary btn-book" type="submit">Book Selected Slots</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script>
+    const selectedSlots = new Set();
+
+    // Function to handle cell click for selecting slots
+    document.querySelectorAll('.available').forEach(cell => {
+      cell.addEventListener('click', function () {
+        const hour = this.getAttribute('data-hour');
+        const court = this.getAttribute('data-court');
+
+        const slotId = `${hour}-${court}`;
+
+        // Toggle selection state
+        if (this.classList.contains('selected')) {
+          this.classList.remove('selected');
+          selectedSlots.delete(slotId);
+        } else {
+          this.classList.add('selected');
+          selectedSlots.add(slotId);
+        }
+
+        // Update hidden input field with selected slots
+        document.getElementById('selectedSlotsInput').value = Array.from(selectedSlots).join(',');
+
+        // Show the Book button if at least one slot is selected
+        document.getElementById('bookBtn').style.display = selectedSlots.size > 0 ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

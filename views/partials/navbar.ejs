@@ -1,0 +1,43 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="#">GamePoint</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <% if(currUser){ %>
+            <a class="nav-link" href="/user/<%=currUser._id%>">Profile</a>
+          <% } %>
+        
+      
+      <div class="navbar-nav position-absolute top-0 end-0 mx-5 my-2">
+        
+          <!-- <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" id="search" name="search"> -->
+          <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+        <% if(!currUser){ %>
+        <a class="nav-link" href="/user/login">Login</a>
+        <a class="nav-link" href="/user/register">Register</a>
+        <% }else{ %>
+          <!-- <p class="nav-link"><%= currUser.username %></p> -->
+        <a class="nav-link" href="/logout">Logout</a>
+        <% } %>
+      </div>
+    </div>
+    </div>
+  </div>
+  </nav>
+
+  <script>
+    const id = document.querySelector("#search");
+    id.addEventListener("keydown",(e)=>{
+      if(e.key == "Enter"){
+        const query = document.querySelector('#search').value;
+        // console.log(query);
+        window.location.replace(`/campground/search/${query}`);
+      }
+    })
+
+</script>
