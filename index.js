@@ -22,7 +22,16 @@ app.use(cors())
 const User = require("./models/user");
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname,"public")));
+// app.set('views', path.join(__dirname, 'views'));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({extended:true}));
+
 app.engine("ejs",ejsMate);
+
+app.set('view cache', false);
+
 
 
 app.use(mongoSanitize({
@@ -49,9 +58,7 @@ mongoose.connect(dbUrl)
   })
 
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.urlencoded({extended:true}));
+
 
 
 // const connect = async () => {
